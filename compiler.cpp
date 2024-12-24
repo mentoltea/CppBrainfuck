@@ -29,6 +29,12 @@ Block* Compiler::parse_blocks(std::string text) {
                     std::format("Unexpected ] : index {}\n{}", index, text.substr(std::max(0, index - 4), std::min((int)text.size(), index + 4 + 1)))
                 );
             }
+            if (current_block->prev_block == nullptr) {
+                exit_on_error(69,
+                    std::format("Empty cycles are banned! : index {}\n{}", index, text.substr(std::max(0, index - 4), std::min((int)text.size(), index + 4 + 1)))
+                );
+                break;
+            }
             current_block = current_block->prev_block;
 
             Block* new_block = current_block->next_block;
@@ -108,14 +114,18 @@ void Compiler::print_blocks(Block* Main) {
             std::cout << (char)current_block->command;
 
             if (current_block->next_block == nullptr) {
-                tabs--;
-                std::cout << std::endl;
-                for (int currtabs = 0; currtabs < tabs; currtabs++) {
-                    std::cout << "  ";
-                }
-                std::cout << ']';
-
-                current_block = current_block->parent_block->next_block;
+                Block* temp = current_block;
+                do {
+                    tabs--;
+                    std::cout << std::endl;
+                    for (int currtabs = 0; currtabs < tabs; currtabs++) {
+                        std::cout << "  ";
+                    }
+                    std::cout << ']';
+                    temp = temp->parent_block;
+                } while (temp->next_block == nullptr);
+                
+                current_block = temp->next_block;
             } else {
                 current_block = current_block->next_block;
             }
