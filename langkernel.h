@@ -5,8 +5,6 @@
 
 namespace Kernel {
 
-typedef int64_t Memory_t;
-
 typedef enum InstructionType {
     INST_UNKNOWN = 0,
 

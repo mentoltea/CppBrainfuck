@@ -7,6 +7,7 @@
 #include <string>
 #include <format>
 #include <algorithm>
+#include <fstream>
 
 namespace Compiler {
 
@@ -37,6 +38,8 @@ InstructionType parse_instruction(char c);
 CommandType parse_command(InstructionType inst);
 
 void exit_on_error(int code, std::string error="error");
+
+void compile(std::string infilename, std::string code);
 
 }
 #endif //BRAINFUCK_COMPILER
